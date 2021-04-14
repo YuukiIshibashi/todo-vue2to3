@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Issueリスト</h1>
-    <el-button type="success" @click="getIssues()">issue取得</el-button>
+    <!-- <el-button type="success" @click="getIssues()">issue取得</el-button> -->
     <el-row :gutter="12">
       <el-col :span="12"  v-for="( issue, index ) in issues" :key="issue.id">
         <el-card class="box-card" shadow="hover" style="margin: 5px 0">
@@ -16,43 +16,39 @@
 </template>
 
 <script>
-import axios from 'axios'
+import useIssues from '@/composables/useIssues'
 
-const HTTP = axios.create({
-  baseURL: `${process.env.VUE_APP_GITHUB_ENDPOINT}`,
-  headers: {
-    // 'Authorization': `token ${process.env.VUE_APP_GITHUB_TOKEN}`,
-    'Accept': 'application/vnd.github.v3+json',
-    'Content-Type':'application/json',
-  },
-})
+// const HTTP = axios.create({
+//   baseURL: `${process.env.VUE_APP_GITHUB_ENDPOINT}`,
+//   headers: {
+//     // 'Authorization': `token ${process.env.VUE_APP_GITHUB_TOKEN}`,
+//     'Accept': 'application/vnd.github.v3+json',
+//     'Content-Type':'application/json',
+//   },
+// })
 
 export default {
   name: 'IssueList',
-  data () {
+  // data () {
+  //   return {
+  //     issues: []
+  //   }
+  // },
+  created() {
+    this.getIssues()
+  },
+  setup() {
+    // const { issues, getIssues, closeIssue } = useIssues()
+    const issues = useIssues().issues;
+    
+    const getIssues = useIssues().getIssues;
+   
+    const closeIssue = useIssues().closeIssue;
     return {
-      issues: []
+      issues,
+      getIssues,
+      closeIssue
     }
   },
-  methods: {
-    closeIssue(index){
-      // const target = this.issues[index]
-      // return HTTP.patch(`/issues/${target.number}`,
-      //     {
-      //       state: "closed"
-      //     },
-      //   )
-      //   .then(() => {
-      //     this.todos.splice(index, 1);
-      // })
-      this.issues.splice(index, 1);
-    },
-    getIssues() {
-      HTTP.get('/issues')
-        .then((res) => {
-          this.issues = res.data;
-      })
-    }
-  }
 }
 </script>

@@ -1,11 +1,8 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/Home.vue'
 import TodoList from '../views/TodoList.vue'
 import IssueList from '../views/IssueList.vue'
 import TodosIssues from '../views/TodosIssues.vue'
-
-Vue.use(VueRouter)
 
 const routes = [
   {
@@ -38,9 +35,8 @@ const routes = [
   },
 ]
 
-const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
+const router = createRouter({
+  history: createWebHistory(process.env.BASE_URL),
   routes
 })
 
